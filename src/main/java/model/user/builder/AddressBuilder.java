@@ -5,7 +5,7 @@ import model.user.Address;
 import java.util.function.Consumer;
 
 public class AddressBuilder {
-    public String streetAddress;
+    public String streetName;
     public String number;
     public String postalCode;
     public String city;
@@ -17,6 +17,6 @@ public class AddressBuilder {
     }
 
     public Address createAddress() {
-        return new Address(streetAddress, number, postalCode, city, country);
+        return new Address(streetName, number, postalCode, city, country);
     }
 }

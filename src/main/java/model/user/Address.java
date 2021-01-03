@@ -1,26 +1,26 @@
 package model.user;
 
 public class Address {
-    private String streetAddress;
+    private String streetName;
     private String number;
     private String postalCode;
     private String city;
     private String country;
 
-    public Address(String streetAddress, String number, String postalCode, String city, String country) {
-        this.streetAddress = streetAddress;
+    public Address(String streetName, String number, String postalCode, String city, String country) {
+        this.streetName = streetName;
         this.number = number;
         this.postalCode = postalCode;
         this.city = city;
         this.country = country;
     }
 
-    public String getStreetAddress() {
-        return streetAddress;
+    public String getStreetName() {
+        return streetName;
     }
 
-    public void setStreetAddress(String streetAddress) {
-        this.streetAddress = streetAddress;
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
     }
 
     public String getNumber() {

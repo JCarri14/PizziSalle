@@ -43,11 +43,11 @@ public class Controller {
         while (!isCorrect) {
             option = Integer.parseInt(this.view.prompt(
                     "\nEntry Point\n" +
-                            "\t [1] Access as User\n" +
-                            "\t [2] Access as Worker\n" +
-                            "\t [3] Access as Admin\n" +
-                            "\t [4] Exit\n" +
-                            "\n Access Type: "));
+                            "\t[1] Access as User\n" +
+                            "\t[2] Access as Worker\n" +
+                            "\t[3] Access as Admin\n" +
+                            "\t[4] Exit\n" +
+                            "\nOption1: "));
             isCorrect = option >= 1 && option <= 4;
             if (!isCorrect) {
                 this.view.printMessage("Invalid option, Range values: [1,3]");
