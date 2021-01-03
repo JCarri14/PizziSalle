@@ -1,47 +1,20 @@
 package db;
 
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import db.enums.DBObject;
+import db.interfaces.DBCallback;
 
-import static java.lang.System.exit;
+import java.sql.SQLException;
+import java.util.Map;
 
-public class DBConnector {
-    private final String username = "GivenCode/user";
-    private final String password = "pass";
-    private final String url = "jdbc:mysql://localhost:3306/pizzisalle?autoReconnect=true&useSSL=false";
+public abstract class DBConnector {
 
-    private static DBConnector instance;
-    private Connection conn;
-    private String query;
-    private Statement stt;
-    private ResultSet rs;
-
-    private DBConnector() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        conn = DriverManager.getConnection(url, username, password);
-        if (conn == null) {
-            System.out.println("DB Connection KO!");
-            exit(1);
-        }
-    }
-
-
-    public static DBConnector getInstance() throws SQLException, ClassNotFoundException {
-        if (instance == null){
-            instance = new DBConnector();
-        }
-        return instance;
-    }
+    public abstract void get(DBObject objectType, Map<String, String> filters, final DBCallback callback) throws SQLException;
+    public abstract void post(DBObject objectType, Object element, final DBCallback callback) throws SQLException;
+    public abstract void delete(DBObject objectType, int elementId, final DBCallback callback) throws SQLException;
+    public abstract void update(DBObject objectType, Object element, final DBCallback callback) throws SQLException;
+    public abstract void disconnect();
     /*
-
-    public void disconnect () throws SQLException {
-        if (instance != null){
-            conn.close();
-            instance = null;
-        }
-    }
 
     public List<Pizza> loadPizzas() throws SQLException {
         List<Pizza> pizzas = new ArrayList<>();
