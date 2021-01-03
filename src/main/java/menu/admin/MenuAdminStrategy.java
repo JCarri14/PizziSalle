@@ -1,6 +1,7 @@
-package strategy;
+package menu.admin;
 
 import model.user.enums.UserLevel;
+import menu.MenuStrategy;
 import view.View;
 
 public class MenuAdminStrategy implements MenuStrategy {
