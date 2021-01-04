@@ -1,6 +1,6 @@
 package model.user.enums;
 
-public enum AccessLevel {
+public enum PermissionLevel {
     FULL(4),
     READ_WRITE(3),
     READ_ONLY(2),
@@ -8,7 +8,7 @@ public enum AccessLevel {
 
     private final int level;
 
-    AccessLevel(int level) {
+    PermissionLevel(int level) {
         this.level = level;
     }
 
