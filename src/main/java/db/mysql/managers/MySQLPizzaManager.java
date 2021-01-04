@@ -32,6 +32,11 @@ public class MySQLPizzaManager extends MySQLManager {
 
     @Override
     public void get(Map<String, String> filters, DBCallback callback) throws SQLException {
+
+    }
+
+    @Override
+    public void getAll(DBCallback callback) throws SQLException {
         List<Pizza> pizzas = new ArrayList<>();
         query = "SELECT * FROM Pizza";
         stt = conn.createStatement();

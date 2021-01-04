@@ -34,6 +34,11 @@ public class MySQLDrinkManager extends MySQLManager {
 
     @Override
     public void get(Map<String, String> filters, DBCallback callback) throws SQLException {
+
+    }
+
+    @Override
+    public void getAll(DBCallback callback) throws SQLException {
         List<Drink> drinks = new ArrayList<>();
         query = "SELECT * FROM Drink";
         stt = conn.createStatement();

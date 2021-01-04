@@ -31,6 +31,11 @@ public class MySQLIngredientManager extends MySQLManager {
 
     @Override
     public void get(Map<String, String> filters, DBCallback callback) throws SQLException {
+
+    }
+
+    @Override
+    public void getAll(DBCallback callback) throws SQLException {
         List<Ingredient> ingredients = new ArrayList<>();
         query = "SELECT * FROM Ingredient";
         stt = conn.createStatement();

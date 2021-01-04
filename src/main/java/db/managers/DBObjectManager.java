@@ -7,6 +7,8 @@ import java.beans.PropertyChangeSupport;
 import java.sql.SQLException;
 import java.util.Map;
 
+/* Observable */
+/* Analogy to DAO pattern */
 public abstract class DBObjectManager {
     protected PropertyChangeSupport support;
 
@@ -23,6 +25,7 @@ public abstract class DBObjectManager {
     }
 
     public abstract void get(Map<String, String> filters, final DBCallback callback) throws SQLException;
+    public abstract void getAll(final DBCallback callback) throws SQLException;
     public abstract void post(Object element, final DBCallback callback) throws SQLException;
     public abstract void update(Object element, final DBCallback callback) throws SQLException;
     public abstract void delete(int elementId, final DBCallback callback) throws SQLException;

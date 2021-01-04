@@ -5,6 +5,7 @@ import db.managers.DBObjectManager;
 import db.managers.MySQLManager;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Map;
 
 public class MySQLOrderManager extends MySQLManager {
@@ -27,6 +28,11 @@ public class MySQLOrderManager extends MySQLManager {
 
     @Override
     public void get(Map<String, String> filters, DBCallback callback) {
+
+    }
+
+    @Override
+    public void getAll(DBCallback callback) throws SQLException {
 
     }
 

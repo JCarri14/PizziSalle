@@ -34,6 +34,11 @@ public class MySQLUserManager extends MySQLManager {
     }
 
     @Override
+    public void getAll(DBCallback callback) throws SQLException {
+
+    }
+
+    @Override
     public void post(Object element, DBCallback callback) throws SQLException {
         User user = (User) element;
         query = "INSERT INTO Customer (name, surname1, surname2, phone_number, address) VALUES ("

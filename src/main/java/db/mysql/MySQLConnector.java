@@ -47,6 +47,11 @@ public class MySQLConnector extends DBConnector {
     }
 
     @Override
+    public void getAll(DBObject objectType, DBCallback callback) throws SQLException {
+        MySQLManagerFactory.get(objectType, conn).getAll(callback);
+    }
+
+    @Override
     public void post(DBObject objectType, Object element, DBCallback callback) throws SQLException {
         MySQLManagerFactory.get(objectType, conn).post(element, callback);
     }

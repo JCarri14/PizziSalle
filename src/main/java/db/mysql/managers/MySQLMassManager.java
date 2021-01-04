@@ -31,6 +31,11 @@ public class MySQLMassManager extends MySQLManager {
     }
 
     @Override
+    public void getAll(DBCallback callback) throws SQLException {
+
+    }
+
+    @Override
     public void post(Object element, DBCallback callback) throws SQLException {
 
     }
