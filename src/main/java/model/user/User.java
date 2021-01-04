@@ -11,17 +11,14 @@ public class User {
     private String phoneNumber;
     private String email;
     private Address address;
-    private boolean isFemale;
-    private boolean isHomeOwner;
     private Timestamp createdAt;
     private Timestamp lastAccess;
-    private int userLevel;
-    private int permissionLevel;
+    private String password;
     private boolean isActive;
 
     public User(int id, String firstName, String middleName, String lastName, int age, String phoneNumber,
-                String email, Address address, boolean isFemale, boolean isHomeOwner, Timestamp createdAt,
-                Timestamp lastAccess, int userLevel, int permissionLevel, boolean isActive) {
+                String email, Address address, Timestamp createdAt,
+                Timestamp lastAccess, String password, boolean isActive) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -30,12 +27,9 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.address = address;
-        this.isFemale = isFemale;
-        this.isHomeOwner = isHomeOwner;
         this.createdAt = createdAt;
         this.lastAccess = lastAccess;
-        this.userLevel = userLevel;
-        this.permissionLevel = permissionLevel;
+        this.password = password;
         this.isActive = isActive;
     }
 
@@ -103,22 +97,6 @@ public class User {
         this.address = address;
     }
 
-    public boolean isFemale() {
-        return isFemale;
-    }
-
-    public void setFemale(boolean female) {
-        isFemale = female;
-    }
-
-    public boolean isHomeOwner() {
-        return isHomeOwner;
-    }
-
-    public void setHomeOwner(boolean homeOwner) {
-        isHomeOwner = homeOwner;
-    }
-
     public Timestamp getCreatedAt() {
         return createdAt;
     }
@@ -135,20 +113,12 @@ public class User {
         this.lastAccess = lastAccess;
     }
 
-    public int getUserLevel() {
-        return userLevel;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUserLevel(int userLevel) {
-        this.userLevel = userLevel;
-    }
-
-    public int getPermissionLevel() {
-        return permissionLevel;
-    }
-
-    public void setPermissionLevel(int permissionLevel) {
-        this.permissionLevel = permissionLevel;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public boolean isActive() {

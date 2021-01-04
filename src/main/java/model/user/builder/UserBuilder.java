@@ -15,12 +15,9 @@ public class UserBuilder {
     public String phoneNumber;
     public String email;
     public Address address;
-    public boolean isFemale;
-    public boolean isHomeOwner;
     public Timestamp createdAt;
     public Timestamp lastAccess;
-    public int userLevel;
-    public int permissionLevel;
+    public String password;
     public boolean isActive;
 
     public UserBuilder with(Consumer<UserBuilder> builder) {
@@ -30,7 +27,7 @@ public class UserBuilder {
 
     public User createUser() {
         return new User(id, firstName, middleName, lastName, age,
-                phoneNumber, email, address, isFemale, isHomeOwner, createdAt,
-                lastAccess, userLevel, permissionLevel, isActive);
+                phoneNumber, email, address, createdAt,
+                lastAccess, password, isActive);
     }
 }

@@ -14,12 +14,9 @@ public class UserBuilder {
     private String phoneNumber;
     private String email;
     private Address address;
-    private boolean isFemale;
-    private boolean isHomeOwner;
     private Timestamp createdAt;
     private Timestamp lastAccess;
-    private int userLevel;
-    private int permissionLevel;
+    private String password;
     private boolean isActive;
 
     public UserBuilder withId(int id) {
@@ -62,16 +59,6 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder withIsFemale(boolean isFemale) {
-        this.isFemale = isFemale;
-        return this;
-    }
-
-    public UserBuilder withIsHomeOwner(boolean isHomeOwner) {
-        this.isHomeOwner = isHomeOwner;
-        return this;
-    }
-
     public UserBuilder withCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
         return this;
@@ -82,13 +69,8 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder withUserLevel(int userLevel) {
-        this.userLevel = userLevel;
-        return this;
-    }
-
-    public UserBuilder withPermissionLevel(int permissionLevel) {
-        this.permissionLevel = permissionLevel;
+    public UserBuilder withPassword(String password) {
+        this.password = password;
         return this;
     }
 
@@ -99,8 +81,8 @@ public class UserBuilder {
 
     public User createUser() {
         return new User(id, firstName, middleName, lastName, age,
-                phoneNumber, email, address, isFemale, isHomeOwner, createdAt,
-                lastAccess, userLevel, permissionLevel, isActive);
+                phoneNumber, email, address, createdAt,
+                lastAccess, password, isActive);
     }
 
 }
