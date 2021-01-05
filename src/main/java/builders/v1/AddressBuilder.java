@@ -1,4 +1,4 @@
-package model.user.builder.oldWay;
+package builders.v1;
 
 import model.user.Address;
 

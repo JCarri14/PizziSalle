@@ -1,31 +1,29 @@
-package model.user.builder.oldWay;
+package builders.v1;
 
 import model.user.Address;
 import model.user.User;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 public class UserBuilder {
-    private int id;
-    private String firstName;
-    private String middleName;
-    private String lastName;
-    private int age;
-    private String phoneNumber;
-    private String email;
-    private Address address;
-    private Timestamp createdAt;
-    private Timestamp lastAccess;
-    private String password;
-    private boolean isActive;
+    protected int id;
+    protected String name;
+    protected String middleName;
+    protected String lastName;
+    protected int age;
+    protected String phoneNumber;
+    protected String email;
+    protected Address address;
+    protected Date createdAt;
+    protected boolean isActive;
 
     public UserBuilder withId(int id) {
         this.id = id;
         return this;
     }
 
-    public UserBuilder withFirstName(String firstName) {
-        this.firstName = firstName;
+    public UserBuilder withName(String name) {
+        this.name = name;
         return this;
     }
 
@@ -59,18 +57,8 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder withCreatedAt(Timestamp createdAt) {
+    public UserBuilder withCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
-        return this;
-    }
-
-    public UserBuilder withLastAccess(Timestamp lastAccess) {
-        this.lastAccess = lastAccess;
-        return this;
-    }
-
-    public UserBuilder withPassword(String password) {
-        this.password = password;
         return this;
     }
 
@@ -80,9 +68,8 @@ public class UserBuilder {
     }
 
     public User createUser() {
-        return new User(id, firstName, middleName, lastName, age,
-                phoneNumber, email, address, createdAt,
-                lastAccess, password, isActive);
+        return new User(id, name, middleName, lastName, age,
+                phoneNumber, email, address, createdAt, isActive);
     }
 
 }
