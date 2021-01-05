@@ -1,15 +1,15 @@
-package menu.worker;
+package controller.strategy.worker;
 
 import model.user.enums.UserLevel;
-import menu.MenuStrategy;
+import controller.strategy.ControllerStrategy;
 import view.View;
 
-public class MenuWorkerStrategy implements MenuStrategy {
+public class WorkerStrategy implements ControllerStrategy {
     public static UserLevel userLevel = UserLevel.WORKER;
 
     private View view;
 
-    public MenuWorkerStrategy(View view) {
+    public WorkerStrategy(View view) {
         this.view = view;
     }
 

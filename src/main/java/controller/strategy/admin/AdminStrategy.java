@@ -1,15 +1,15 @@
-package menu.admin;
+package controller.strategy.admin;
 
 import model.user.enums.UserLevel;
-import menu.MenuStrategy;
+import controller.strategy.ControllerStrategy;
 import view.View;
 
-public class MenuAdminStrategy implements MenuStrategy {
+public class AdminStrategy implements ControllerStrategy {
     public static UserLevel userLevel = UserLevel.ADMIN;
 
     private View view;
 
-    public MenuAdminStrategy(View view) {
+    public AdminStrategy(View view) {
         this.view = view;
     }
 
