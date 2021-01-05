@@ -1,26 +1,23 @@
 package model.user;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 public class User {
     private int id;
-    private String firstName;
+    private String name;
     private String middleName;
     private String lastName;
     private int age;
     private String phoneNumber;
     private String email;
     private Address address;
-    private Timestamp createdAt;
-    private Timestamp lastAccess;
-    private String password;
+    private Date createdAt;
     private boolean isActive;
 
-    public User(int id, String firstName, String middleName, String lastName, int age, String phoneNumber,
-                String email, Address address, Timestamp createdAt,
-                Timestamp lastAccess, String password, boolean isActive) {
+    public User(int id, String name, String middleName, String lastName, int age, String phoneNumber,
+                String email, Address address, Date createdAt, boolean isActive) {
         this.id = id;
-        this.firstName = firstName;
+        this.name = name;
         this.middleName = middleName;
         this.lastName = lastName;
         this.age = age;
@@ -28,8 +25,6 @@ public class User {
         this.email = email;
         this.address = address;
         this.createdAt = createdAt;
-        this.lastAccess = lastAccess;
-        this.password = password;
         this.isActive = isActive;
     }
 
@@ -41,12 +36,12 @@ public class User {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getMiddleName() {
@@ -97,28 +92,12 @@ public class User {
         this.address = address;
     }
 
-    public Timestamp getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Timestamp getLastAccess() {
-        return lastAccess;
-    }
-
-    public void setLastAccess(Timestamp lastAccess) {
-        this.lastAccess = lastAccess;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public boolean isActive() {

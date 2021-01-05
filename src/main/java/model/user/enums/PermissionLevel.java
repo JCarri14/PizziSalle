@@ -1,10 +1,10 @@
 package model.user.enums;
 
 public enum PermissionLevel {
-    FULL(4),
-    READ_WRITE(3),
-    READ_ONLY(2),
-    NO_ACCESS(1);
+    FULL(3),
+    READ_WRITE(2),
+    READ_ONLY(1),
+    NO_ACCESS(0);
 
     private final int level;
 
