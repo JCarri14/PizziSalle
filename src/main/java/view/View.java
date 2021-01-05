@@ -48,6 +48,14 @@ public class View {
         System.out.println("---------------------------------------------------");
     }
 
+    public void printUserInformation(String name, String delegation) {
+        System.out.println("" +
+                "----------------------------------------------------------------" +
+                "\nClient name: " + name +
+                "\nDelegation: " + delegation +
+                "\n----------------------------------------------------------------");
+    }
+
     public void printPizzas(List<Pizza> pizzas, String especialPizza) {
         System.out.println();
         System.out.println("---- Pizzes disponibles ----");
