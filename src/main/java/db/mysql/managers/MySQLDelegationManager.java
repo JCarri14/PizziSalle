@@ -1,13 +1,10 @@
 package db.mysql.managers;
 
-import db.interfaces.DBCallback;
-import db.managers.DBObjectManager;
+import db.callbacks.DBCallback;
 import db.managers.MySQLManager;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

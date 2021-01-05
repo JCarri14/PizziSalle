@@ -1,6 +1,6 @@
 package db.managers;
 
-import db.interfaces.DBCallback;
+import db.callbacks.DBCallback;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

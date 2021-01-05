@@ -1,6 +1,6 @@
 package db.mysql.managers;
 
-import db.interfaces.DBCallback;
+import db.callbacks.DBCallback;
 import db.managers.MySQLManager;
 
 import java.sql.Connection;

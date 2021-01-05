@@ -1,8 +1,8 @@
 package db.mysql.managers;
 
-import db.interfaces.DBCallback;
-import db.managers.DBObjectManager;
+import db.callbacks.DBCallback;
 import db.managers.MySQLManager;
+import db.mappers.UserMapper;
 import model.user.User;
 
 import java.sql.Connection;
@@ -41,13 +41,7 @@ public class MySQLUserManager extends MySQLManager {
     @Override
     public void post(Object element, DBCallback callback) throws SQLException {
         User user = (User) element;
-        query = "INSERT INTO Customer (name, surname1, surname2, phone_number, address) VALUES ("
-                + '\'' + user.getFirstName() + '\'' + ","
-                + '\'' + user.getMiddleName() + '\'' + ","
-                + '\'' + user.getLastName() + '\'' + ","
-                + '\'' + user.getPhoneNumber() + '\'' + ","
-                + '\'' + user.getAddress() + '\'' + ","
-                + ");";
+        query = UserMapper.ObjectToMySQLQuery(user);
         stt = conn.createStatement();
         stt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 

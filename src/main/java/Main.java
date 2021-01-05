@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            //DBConnector dbConnector = DBConnector.getInstance();
+            //DBConnector dbConnector = DBConnectorFactory.create(DBType.MYSQL);
 
             Model model = new Model();
 
@@ -19,7 +19,7 @@ public class Main {
             Controller controller = new Controller(model, view);
             addShutDownHook();
             controller.execute();
-
+            controller.finish();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }

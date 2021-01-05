@@ -2,7 +2,7 @@ package db.mysql;
 
 import db.DBConnector;
 import db.enums.DBObject;
-import db.interfaces.DBCallback;
+import db.callbacks.DBCallback;
 
 import java.sql.*;
 import java.util.Map;
@@ -17,9 +17,6 @@ public class MySQLConnector extends DBConnector {
     private final String url = "jdbc:mysql://localhost:3306/pizzisalle?autoReconnect=true&useSSL=false";
 
     private Connection conn;
-    private String query;
-    private Statement stt;
-    private ResultSet rs;
 
     private MySQLConnector() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");

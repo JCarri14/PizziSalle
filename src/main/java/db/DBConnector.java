@@ -2,7 +2,7 @@ package db;
 
 
 import db.enums.DBObject;
-import db.interfaces.DBCallback;
+import db.callbacks.DBCallback;
 
 import java.sql.SQLException;
 import java.util.Map;

@@ -15,6 +15,14 @@ public class PizzaBuilder {
     private List<PizzaItem> extras;
     private Mass mass;
 
+    public PizzaBuilder withBasePizza(Pizza pizza) {
+        this.id = pizza.getId();
+        this.name = pizza.getName();
+        this.ingredients = pizza.getIngredients();
+        this.mass = pizza.getMass();
+        return this;
+    }
+
     public PizzaBuilder withId(int id) {
         this.id = id;
         return this;

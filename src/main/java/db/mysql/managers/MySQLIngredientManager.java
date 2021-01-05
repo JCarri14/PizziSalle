@@ -1,7 +1,6 @@
 package db.mysql.managers;
 
-import db.interfaces.DBCallback;
-import db.managers.DBObjectManager;
+import db.callbacks.DBCallback;
 import db.managers.MySQLManager;
 import model.pizza.Ingredient;
 

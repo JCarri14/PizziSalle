@@ -1,17 +1,19 @@
 package controller;
 
+import db.enums.DBType;
 import model.delegation.Delegation;
 import model.delegation.DelegationFactory;
 import model.user.User;
-import model.user.builder.UserBuilder;
-import strategy.MenuStrategy;
+import builders.v2.UserBuilder;
+import controller.strategy.ControllerStrategy;
 
 public class SessionContext {
     private static SessionContext instance;
 
-    private MenuStrategy menuStrategy;
+    private ControllerStrategy controllerStrategy;
     private User userCredentials;
     private Delegation delegation;
+    private DBType dbType;
 
     public static SessionContext getInstance() {
         if (instance == null) {
@@ -27,14 +29,15 @@ public class SessionContext {
     private SessionContext() {
         this.userCredentials = new UserBuilder().createUser();
         this.delegation = DelegationFactory.getDelegation(1);
+        this.dbType = DBType.MYSQL;
     }
 
-    public MenuStrategy getMenuStrategy() {
-        return menuStrategy;
+    public ControllerStrategy getMenuStrategy() {
+        return controllerStrategy;
     }
 
-    public void setMenuStrategy(MenuStrategy menuStrategy) {
-        this.menuStrategy = menuStrategy;
+    public void setMenuStrategy(ControllerStrategy controllerStrategy) {
+        this.controllerStrategy = controllerStrategy;
     }
 
     public User getUserCredentials() {
@@ -51,5 +54,13 @@ public class SessionContext {
 
     public void setDelegation(Delegation delegation) {
         this.delegation = delegation;
+    }
+
+    public DBType getDbType() {
+        return dbType;
+    }
+
+    public void setDbType(DBType dbType) {
+        this.dbType = dbType;
     }
 }

@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class DBConnectorFactory {
 
-    public static DBConnector create(DBType type) throws SQLException, ClassNotFoundException {
+    public static DBConnector get(DBType type) throws SQLException, ClassNotFoundException {
         switch (type) {
             case MYSQL:
                 return MySQLConnector.getInstance();

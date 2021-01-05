@@ -2,7 +2,7 @@ package db.mongodb;
 
 import db.DBConnector;
 import db.enums.DBObject;
-import db.interfaces.DBCallback;
+import db.callbacks.DBCallback;
 
 import java.sql.SQLException;
 import java.util.Map;
@@ -23,6 +23,11 @@ public class MongoDBConnector extends DBConnector {
 
     @Override
     public void get(DBObject objectType, Map<String, String> filters, DBCallback callback) {
+
+    }
+
+    @Override
+    public void getAll(DBObject objectType, DBCallback callback) throws SQLException {
 
     }
 

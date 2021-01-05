@@ -1,5 +1,6 @@
 package builders.v1;
 
+import model.delegation.Delegation;
 import model.order.Order;
 import model.order.OrderItem;
 import model.user.User;
@@ -10,6 +11,7 @@ import java.util.List;
 public class OrderBuilder {
     private int id;
     private User customer;
+    private Delegation delegation;
     private String comments;
     private List<OrderItem> items;
 
@@ -23,8 +25,14 @@ public class OrderBuilder {
         return this;
     }
 
+    public OrderBuilder withDelegation(Delegation delegation) {
+        this.delegation = delegation;
+        return this;
+    }
+
     public OrderBuilder withComments(String comments) {
-        this.comments = comments;
+        if (this.comments != null) this.comments += ", " + comments;
+        else this.comments = comments;
         return this;
     }
 
@@ -40,6 +48,6 @@ public class OrderBuilder {
     }
 
     public Order createOrder() {
-        return new Order(id, customer, comments, items);
+        return new Order(id, customer, delegation, comments, items);
     }
 }
