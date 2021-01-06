@@ -2,6 +2,11 @@ DROP DATABASE IF EXISTS pizzisalle;
 CREATE DATABASE pizzisalle;
 USE pizzisalle;
 
+DROP TABLE IF EXISTS Settings;
+CREATE TABLE Settings(
+    did_populate BOOLEAN
+);
+
 DROP TABLE IF EXISTS Address CASCADE;
 CREATE TABLE Address(
     id_address INT NOT NULL AUTO_INCREMENT,
@@ -37,6 +42,13 @@ CREATE TABLE Worker(
     permission_level INT DEFAULT 0,
     PRIMARY KEY (id_worker),
     FOREIGN KEY (id_worker) REFERENCES User(id_user)
+);
+
+DROP TABLE IF EXISTS Delegation CASCADE;
+CREATE TABLE Delegation(
+    id_delegation INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id_delegation)
 );
 
 DROP TABLE IF EXISTS Ingredient CASCADE;
@@ -100,18 +112,21 @@ DROP TABLE IF EXISTS CustomerOrder CASCADE;
 CREATE TABLE CustomerOrder(
     id_order INT NOT NULL AUTO_INCREMENT,
     id_customer INT,
+    id_delegation INT,
     comment VARCHAR(255),
     PRIMARY KEY (id_order),
-    FOREIGN KEY(id_customer) REFERENCES User(id_user)
+    FOREIGN KEY(id_customer) REFERENCES User(id_user),
+    FOREIGN KEY (id_delegation) REFERENCES Delegation(id_delegation)
 );
 
 DROP TABLE IF EXISTS OrderItem CASCADE;
 CREATE TABLE OrderItem(
     id_order_item INT NOT NULL AUTO_INCREMENT,
-    id_order INT NOT NULL,
+    id_order INT,
     id_pizza INT,
     id_drink INT,
     id_mass INT,
+    quantity INT DEFAULT 1,
     PRIMARY KEY (id_order_item),
     FOREIGN KEY (id_order) REFERENCES CustomerOrder(id_order),
     FOREIGN KEY (id_pizza) REFERENCES Pizza(id_pizza),

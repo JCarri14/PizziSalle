@@ -11,7 +11,9 @@ public class Main {
     public static void main(String[] args) {
         try {
             //DBConnector dbConnector = DBConnectorFactory.create(DBType.MYSQL);
-
+            if (!checkInitialPopulation()) {
+                populateDatabase();
+            }
             Model model = new Model();
 
             View view = new View();
@@ -23,6 +25,14 @@ public class Main {
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private static boolean checkInitialPopulation() {
+        return true;
+    }
+
+    private static void populateDatabase() {
+
     }
 
     private static void addShutDownHook() {

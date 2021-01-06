@@ -6,6 +6,7 @@ import builders.v2.AddressBuilder;
 import builders.v2.UserBuilder;
 import controller.SessionContext;
 import db.DBConnectorFactory;
+import db.enums.DBResponse;
 import db.callbacks.DBCallback;
 import db.enums.DBObject;
 import db.enums.DBType;
@@ -268,19 +269,19 @@ public class CustomerStrategy implements ControllerStrategy, DBCallback {
         try {
             DBConnectorFactory
                     .get(DBType.MYSQL)
-                    .post(DBObject.ORDER, order, this);
+                    .insert(DBObject.ORDER, order, this);
         } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
         }
     }
 
     @Override
-    public void onSuccess(Map<String, Object> res) {
+    public void onSuccess(Map<DBResponse, Object> res) {
         // do something...
     }
 
     @Override
-    public void onFailure(Map<String, Object> res) {
+    public void onFailure(Map<DBResponse, Object> res) {
         // do something...
     }
 }

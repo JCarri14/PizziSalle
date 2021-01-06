@@ -3,11 +3,17 @@ package builders.v1;
 import model.user.Address;
 
 public class AddressBuilder {
+    private int id;
     private String streetAddress;
     private String number;
     private String postalCode;
     private String city;
     private String country;
+
+    public AddressBuilder withId(int id) {
+        this.id = id;
+        return this;
+    }
 
     public AddressBuilder withStreetAddress(String streetAddress) {
         this.streetAddress = streetAddress;
@@ -35,7 +41,7 @@ public class AddressBuilder {
     }
 
     public Address createAddress() {
-        return new Address(streetAddress, number, postalCode, city, country);
+        return new Address(id, streetAddress, number, postalCode, city, country);
     }
 
 }

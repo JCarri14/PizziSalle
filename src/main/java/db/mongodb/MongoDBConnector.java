@@ -32,7 +32,7 @@ public class MongoDBConnector extends DBConnector {
     }
 
     @Override
-    public void post(DBObject objectType, Object element, DBCallback callback) {
+    public void insert(DBObject objectType, Object element, DBCallback callback) {
 
     }
 

@@ -11,8 +11,8 @@ public abstract class DBConnector {
 
     public abstract void get(DBObject objectType, Map<String, String> filters, final DBCallback callback) throws SQLException;
     public abstract void getAll(DBObject objectType, final DBCallback callback) throws SQLException;
-    public abstract void post(DBObject objectType, Object element, final DBCallback callback) throws SQLException;
-    public abstract void delete(DBObject objectType, int elementId, final DBCallback callback) throws SQLException;
+    public abstract void insert(DBObject objectType, Object element, final DBCallback callback) throws SQLException;
+    public abstract void delete(DBObject objectType, Map<String, String> filters, final DBCallback callback) throws SQLException;
     public abstract void update(DBObject objectType, Object element, final DBCallback callback) throws SQLException;
     public abstract void disconnect();
     /*
