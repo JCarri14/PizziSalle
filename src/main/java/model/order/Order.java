@@ -1,19 +1,24 @@
 package model.order;
 
+import db.enums.DBObject;
+import model.delegation.Delegation;
 import model.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
+    public final static DBObject type = DBObject.ORDER;
     private int id;
     private User customer;
+    private Delegation delegation;
     private String comments;
     private List<OrderItem> items;
 
-    public Order(int id, User customer, String comments, List<OrderItem> items) {
+    public Order(int id, User customer, Delegation delegation, String comments, List<OrderItem> items) {
         this.id = id;
         this.customer = customer;
+        this.delegation = delegation;
         this.comments = comments;
         this.items = items;
     }
@@ -32,6 +37,14 @@ public class Order {
 
     public void setCustomer(User customer) {
         this.customer = customer;
+    }
+
+    public Delegation getDelegation() {
+        return delegation;
+    }
+
+    public void setDelegation(Delegation delegation) {
+        this.delegation = delegation;
     }
 
     public String getComments() {

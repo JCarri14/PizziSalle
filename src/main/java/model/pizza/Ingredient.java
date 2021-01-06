@@ -1,6 +1,9 @@
 package model.pizza;
 
+import db.enums.DBObject;
+
 public class Ingredient {
+    public final static DBObject type = DBObject.INGREDIENT;
     private int id;
     private String name;
     private String description;

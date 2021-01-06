@@ -1,15 +1,25 @@
 package model.order;
 
+import db.enums.DBObject;
 import model.pizza.Drink;
 import model.pizza.Mass;
 import model.pizza.Pizza;
 
 public class OrderItem {
+    public final static DBObject type = DBObject.ORDER_ITEM;
     private int id;
     private int quantity;
     private Pizza pizza;
     private Drink drink;
     private Mass mass;
+
+    public OrderItem(int id, int quantity, Pizza pizza, Drink drink, Mass mass) {
+        this.id = id;
+        this.quantity = quantity;
+        this.pizza = pizza;
+        this.drink = drink;
+        this.mass = mass;
+    }
 
     public OrderItem(int id, int quantity, Pizza pizza) {
         this.id = id;
