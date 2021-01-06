@@ -2,12 +2,14 @@ package db.mysql.managers;
 
 import db.callbacks.DBCallback;
 import db.managers.MySQLManager;
+import model.order.Order;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
-public class MySQLOrderManager extends MySQLManager {
+public class MySQLOrderManager extends MySQLManager<Order> {
     private static MySQLOrderManager instance;
 
     protected MySQLOrderManager(Connection conn) {
@@ -26,27 +28,27 @@ public class MySQLOrderManager extends MySQLManager {
     }
 
     @Override
-    public void get(Map<String, String> filters, DBCallback callback) {
-
+    public List<Order> get(Map<String, String> filters) throws SQLException {
+        return null;
     }
 
     @Override
-    public void getAll(DBCallback callback) throws SQLException {
-
+    public List<Order> getAll() throws SQLException {
+        return null;
     }
 
     @Override
-    public void post(Object element, DBCallback callback) {
-
+    public int insert(Order element) throws SQLException {
+        return 0;
     }
 
     @Override
-    public void delete(int elementId, DBCallback callback) {
-
+    public boolean update(Order element) throws SQLException {
+        return false;
     }
 
     @Override
-    public void update(Object element, DBCallback callback) {
-
+    public boolean delete(Map<String, String> filters) throws SQLException {
+        return false;
     }
 }
