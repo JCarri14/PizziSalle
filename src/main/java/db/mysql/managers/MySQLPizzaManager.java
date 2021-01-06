@@ -1,17 +1,17 @@
 package db.mysql.managers;
 
-import db.callbacks.DBCallback;
 import db.managers.MySQLManager;
+import db.mappers.PizzaMapper;
 import model.pizza.Pizza;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MySQLPizzaManager extends MySQLManager {
+public class MySQLPizzaManager extends MySQLManager<Pizza> {
     private static MySQLPizzaManager instance;
     protected List<Pizza> pizzas;
 
@@ -30,39 +30,59 @@ public class MySQLPizzaManager extends MySQLManager {
         return instance;
     }
 
-    @Override
-    public void get(Map<String, String> filters, DBCallback callback) throws SQLException {
 
+    @Override
+    public List<Pizza> get(Map<String, String> filters) throws SQLException {
+        List<Pizza> pizzas = new ArrayList<>();
+        query = "SELECT * FROM Pizza";
+        query += getQueryFilters(filters);
+        stt = conn.createStatement();
+        rs = stt.executeQuery (query);
+
+        while(rs.next()) {
+            Pizza p = PizzaMapper.MySQLResponseToObject(rs);
+            pizzas.add(p);
+        }
+
+        return pizzas;
     }
 
     @Override
-    public void getAll(DBCallback callback) throws SQLException {
+    public List<Pizza> getAll() throws SQLException {
         List<Pizza> pizzas = new ArrayList<>();
         query = "SELECT * FROM Pizza";
         stt = conn.createStatement();
         rs = stt.executeQuery (query);
 
         while(rs.next()) {
-            //Pizza p = new Pizza(rs.getInt("id_pizza"),rs.getString("name"));
-            //pizzas.add(p);
+            Pizza p = PizzaMapper.MySQLResponseToObject(rs);
+            pizzas.add(p);
         }
-        callback.onSuccess((Map<String, Object>) new HashMap<>().put("content", pizzas));
+        return pizzas;
     }
 
     @Override
-    public void post(Object element, DBCallback callback) {
+    public int insert(Pizza element) throws SQLException {
+        Pizza pizza = element;
+        query = PizzaMapper.ObjectToMySQLQuery(pizza);
+        stt = conn.createStatement();
+        stt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
+        rs = stt.getGeneratedKeys();
+        if (rs.next()) {
+            return rs.getInt(1);
+        } else {
+            throw new SQLException("KO. Creating new customer failed, no ID obtained.");
+        }
     }
 
     @Override
-    public void update(Object element, DBCallback callback) {
-
+    public boolean update(Pizza element) throws SQLException {
+        return false;
     }
 
     @Override
-    public void delete(int elementId, DBCallback callback) {
-
+    public boolean delete(Map<String, String> filters) throws SQLException {
+        return false;
     }
-
-
 }
