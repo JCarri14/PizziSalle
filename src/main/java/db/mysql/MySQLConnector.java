@@ -38,29 +38,33 @@ public class MySQLConnector extends DBConnector {
         return instance;
     }
 
+    public Connection getConn() {
+        return conn;
+    }
+
     @Override
     public void get(DBObject objectType, Map<String, String> filters, DBCallback callback) throws SQLException {
-        MySQLManagerFactory.get(objectType, conn).get(filters, callback);
+        MySQLManagerFactory.get(objectType, conn).get(filters);
     }
 
     @Override
     public void getAll(DBObject objectType, DBCallback callback) throws SQLException {
-        MySQLManagerFactory.get(objectType, conn).getAll(callback);
+        MySQLManagerFactory.get(objectType, conn).getAll();
     }
 
     @Override
-    public void post(DBObject objectType, Object element, DBCallback callback) throws SQLException {
-        MySQLManagerFactory.get(objectType, conn).post(element, callback);
+    public void insert(DBObject objectType, Object element, DBCallback callback) throws SQLException {
+        MySQLManagerFactory.get(objectType, conn).insert(element);
     }
 
     @Override
-    public void delete(DBObject objectType, int elementId, DBCallback callback) throws SQLException {
-        MySQLManagerFactory.get(objectType, conn).delete(elementId, callback);
+    public void delete(DBObject objectType, Map<String, String> filters, DBCallback callback) throws SQLException {
+        MySQLManagerFactory.get(objectType, conn).delete(filters);
     }
 
     @Override
     public void update(DBObject objectType, Object element, DBCallback callback) throws SQLException {
-        MySQLManagerFactory.get(objectType, conn).update(element, callback);
+        MySQLManagerFactory.get(objectType, conn).update(element);
     }
 
     @Override

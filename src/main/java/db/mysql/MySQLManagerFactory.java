@@ -16,8 +16,12 @@ public class MySQLManagerFactory {
                 return MySQLDelegationManager.getInstance(conn);
             case ORDER:
                 return MySQLOrderManager.getInstance(conn);
+            case ORDER_ITEM:
+                //return MySQLOrderItemManager.getInstance(conn);
             case PIZZA:
                 return MySQLPizzaManager.getInstance(conn);
+            case PIZZA_ITEM:
+                return MySQLPizzaItemManager.getInstance(conn);
             case DRINK:
                 return MySQLDrinkManager.getInstance(conn);
             case INGREDIENT:
