@@ -1,6 +1,5 @@
 package db.mysql.managers;
 
-import db.callbacks.DBCallback;
 import db.managers.MySQLManager;
 import db.mappers.UserMapper;
 import model.user.User;
@@ -8,9 +7,11 @@ import model.user.User;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-public class MySQLUserManager extends MySQLManager {
+public class MySQLUserManager extends MySQLManager<User> {
     private static MySQLUserManager instance;
 
     protected MySQLUserManager(Connection conn) {
@@ -29,37 +30,57 @@ public class MySQLUserManager extends MySQLManager {
     }
 
     @Override
-    public void get(Map<String, String> filters, DBCallback callback) {
+    public List<User> get(Map<String, String> filters) throws SQLException {
+        List<User> users = new ArrayList<>();
+        query = "SELECT * FROM User";
+        query += getQueryFilters(filters);
+        stt = conn.createStatement();
+        rs = stt.executeQuery (query);
 
+        while(rs.next()) {
+            User p = UserMapper.MySQLResponseToObject(rs);
+            users.add(p);
+        }
+
+        return users;
     }
 
     @Override
-    public void getAll(DBCallback callback) throws SQLException {
+    public List<User> getAll() throws SQLException {
+        List<User> users = new ArrayList<>();
+        query = "SELECT * FROM User";
+        stt = conn.createStatement();
+        rs = stt.executeQuery (query);
 
+        while(rs.next()) {
+            User p = UserMapper.MySQLResponseToObject(rs);
+            users.add(p);
+        }
+
+        return users;
     }
 
     @Override
-    public void post(Object element, DBCallback callback) throws SQLException {
-        User user = (User) element;
-        query = UserMapper.ObjectToMySQLQuery(user);
+    public int insert(User element) throws SQLException {
+        query = UserMapper.ObjectToMySQLQuery(element);
         stt = conn.createStatement();
         stt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
         rs = stt.getGeneratedKeys();
         if (rs.next()) {
-            //return rs.getInt(1);
+            return rs.getInt(1);
         } else {
             throw new SQLException("KO. Creating new customer failed, no ID obtained.");
         }
     }
 
     @Override
-    public void update(Object element, DBCallback callback) {
-
+    public boolean update(User element) throws SQLException {
+        return false;
     }
 
     @Override
-    public void delete(int elementId, DBCallback callback) {
-
+    public boolean delete(Map<String, String> filters) throws SQLException {
+        return false;
     }
 }
