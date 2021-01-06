@@ -1,17 +1,17 @@
 package db.mysql.managers;
 
-import db.callbacks.DBCallback;
 import db.managers.MySQLManager;
+import db.mappers.DrinkMapper;
 import model.pizza.Drink;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MySQLDrinkManager extends MySQLManager {
+public class MySQLDrinkManager extends MySQLManager<Drink> {
     private static MySQLDrinkManager instance;
 
     protected MySQLDrinkManager(Connection conn) {
@@ -30,36 +30,55 @@ public class MySQLDrinkManager extends MySQLManager {
     }
 
     @Override
-    public void get(Map<String, String> filters, DBCallback callback) throws SQLException {
+    public List<Drink> get(Map<String, String> filters) throws SQLException {
+        List<Drink> ingredients = new ArrayList<>();
+        query = "SELECT * FROM Drink";
+        query += getQueryFilters(filters);
+        stt = conn.createStatement();
+        rs = stt.executeQuery (query);
 
+        while(rs.next()) {
+            Drink p = DrinkMapper.MySQLResponseToObject(rs);
+            ingredients.add(p);
+        }
+        return ingredients;
     }
 
     @Override
-    public void getAll(DBCallback callback) throws SQLException {
-        List<Drink> drinks = new ArrayList<>();
+    public List<Drink> getAll() throws SQLException {
+        List<Drink> ingredients = new ArrayList<>();
         query = "SELECT * FROM Drink";
         stt = conn.createStatement();
         rs = stt.executeQuery (query);
 
         while(rs.next()) {
-            //Drink d = new Drink(rs.getInt("id_drink"), rs.getString("name"));
-            //drinks.add(d);
+            Drink p = DrinkMapper.MySQLResponseToObject(rs);
+            ingredients.add(p);
         }
-        callback.onSuccess((Map<String, Object>) new HashMap<>().put("content", drinks));
+        return ingredients;
     }
 
     @Override
-    public void post(Object element, DBCallback callback) {
+    public int insert(Drink element) throws SQLException {
+        query = DrinkMapper.ObjectToMySQLQuery(element);
+        stt = conn.createStatement();
+        stt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
+        rs = stt.getGeneratedKeys();
+        if (rs.next()) {
+            return rs.getInt(1);
+        } else {
+            throw new SQLException("KO. Creating new customer failed, no ID obtained.");
+        }
     }
 
     @Override
-    public void delete(int elementId, DBCallback callback) {
-
+    public boolean update(Drink element) throws SQLException {
+        return false;
     }
 
     @Override
-    public void update(Object element, DBCallback callback) {
-
+    public boolean delete(Map<String, String> filters) throws SQLException {
+        return false;
     }
 }
