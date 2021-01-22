@@ -1,33 +1,37 @@
 package db.mysql;
 
-import db.enums.DBObject;
-import db.managers.MySQLManager;
+import db.model.DBObject;
+import db.managers.MySQLEntityManager;
 import db.mysql.managers.*;
 
 import java.sql.Connection;
 
+/**
+ * @author Joan CA
+ * @implNote Factory class from which retrieve a desired EntryManager class
+ */
 public class MySQLManagerFactory {
 
-    public static MySQLManager get(DBObject objectType, Connection conn) {
+    public static MySQLEntityManager get(DBObject objectType, Connection conn) {
         switch (objectType) {
             case USER:
-                return MySQLUserManager.getInstance(conn);
+                return UserManager.getInstance(conn);
             case DELEGATION:
-                return MySQLDelegationManager.getInstance(conn);
+                return DelegationManager.getInstance(conn);
             case ORDER:
-                return MySQLOrderManager.getInstance(conn);
+                return OrderManager.getInstance(conn);
             case ORDER_ITEM:
-                //return MySQLOrderItemManager.getInstance(conn);
+                return OrderItemManager.getInstance(conn);
             case PIZZA:
-                return MySQLPizzaManager.getInstance(conn);
+                return PizzaManager.getInstance(conn);
             case PIZZA_ITEM:
-                return MySQLPizzaItemManager.getInstance(conn);
+                return PizzaItemManager.getInstance(conn);
             case DRINK:
-                return MySQLDrinkManager.getInstance(conn);
+                return DrinkManager.getInstance(conn);
             case INGREDIENT:
-                return MySQLIngredientManager.getInstance(conn);
+                return IngredientManager.getInstance(conn);
             case MASS:
-                return MySQLMassManager.getInstance(conn);
+                return MassManager.getInstance(conn);
             default:
                 return null;
         }
