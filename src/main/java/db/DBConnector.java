@@ -1,20 +1,53 @@
 package db;
 
 
-import db.enums.DBObject;
-import db.callbacks.DBCallback;
+import db.interfaces.CrudRepository;
 
-import java.sql.SQLException;
-import java.util.Map;
+/**
+ * @author Joan CA
+ * @implNote Base class for connecting to a database, made abstract for impeding instantiation
+ */
+public abstract class DBConnector implements CrudRepository {
 
-public abstract class DBConnector {
+    protected String username;
+    protected String database;
+    protected String password;
 
-    public abstract void get(DBObject objectType, Map<String, String> filters, final DBCallback callback) throws SQLException;
-    public abstract void getAll(DBObject objectType, final DBCallback callback) throws SQLException;
-    public abstract void insert(DBObject objectType, Object element, final DBCallback callback) throws SQLException;
-    public abstract void delete(DBObject objectType, Map<String, String> filters, final DBCallback callback) throws SQLException;
-    public abstract void update(DBObject objectType, Object element, final DBCallback callback) throws SQLException;
+    public DBConnector() {
+    }
+
+    public DBConnector(String username, String database, String password) {
+        this.username = username;
+        this.database = database;
+        this.password = password;
+    }
+
+    public abstract void connect() throws Exception;
     public abstract void disconnect();
+
+    public void setCredentials(String username, String database, String password) {
+        this.username = username;
+        this.database = database;
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
     /*
 
     public List<Pizza> loadPizzas() throws SQLException {
