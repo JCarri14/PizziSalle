@@ -1,10 +1,8 @@
 package db.callbacks;
 
-import db.enums.DBResponse;
-
-import java.util.Map;
+import db.model.DBResponse;
 
 public interface DBCallback {
-    void onSuccess(Map<DBResponse, Object> res);
-    void onFailure(Map<DBResponse, Object> res);
+    void onResponse(DBResponse DBResponse);
+    void onFailure(Throwable t);
 }

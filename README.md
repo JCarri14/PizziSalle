@@ -1,1 +1,1 @@
-# PizziSalle
+# PizziSalle - Design Patterns Project

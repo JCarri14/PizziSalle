@@ -2,6 +2,9 @@ package controller;
 
 import controller.strategy.customer.CustomerStrategy;
 import db.DBConnector;
+import db.DBConnectorFactory;
+import db.model.DBType;
+import db.repositories.PizzaRepository;
 import model.Model;
 import controller.strategy.admin.AdminStrategy;
 import controller.strategy.ControllerStrategy;
@@ -20,7 +23,7 @@ public class Controller {
         this.model = model;
         this.view = view;
         this.context = SessionContext.getInstance();
-        //this.dbConnector = DBConnectorFactory.create(DBType.MYSQL);
+        this.dbConnector = DBConnectorFactory.get(DBType.MYSQL);
     }
 
     public void execute() {

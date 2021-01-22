@@ -1,6 +1,6 @@
 package controller;
 
-import db.enums.DBType;
+import db.model.DBType;
 import model.delegation.Delegation;
 import model.delegation.DelegationFactory;
 import model.user.User;
