@@ -1,5 +1,7 @@
 package view.components;
 
+import model.delegation.Delegation;
+
 import java.util.List;
 
 public class CustomerComponents {
@@ -14,13 +16,22 @@ public class CustomerComponents {
                 "Option: ";
     }
 
-    public static String createDelegationMenu() {
-        return "\nChoose your delegation:\n" +
+    public static String createDelegationMenu(List<Delegation> delegations) {
+        return  "\nChoose your delegation:\n" +
                 "\t[1]. Barcelona\n" +
                 "\t[2]. Lleida\n" +
                 "\t[3]. Tarragona\n" +
                 "\t[4]. Girona\n" +
                 "Delegacio: ";
+
+        /*StringBuilder res = new StringBuilder();
+        res.append("\nChoose your delegation:\n");
+        for (int i = 0; i < delegations.size(); i++) {
+            res.append("\t[").append(i + 1).append("] ").append(delegations.get(i).getName()).append("\n");
+        }
+        res.append("Delegacio: ");
+        return res.toString();
+        */
     }
 
     public static String createOrderOptions() {
@@ -51,8 +62,9 @@ public class CustomerComponents {
         StringBuilder res = new StringBuilder();
         for (int i = 0; i < items.size(); i++) {
             res.append(i + 1).append(". ").append(items.get(i)).append(" ");
-            if (i % cols == 0) res.append("\n");
+            if (i > 0 && i % cols == 0) res.append("\n");
         }
+        res.append("\n");
         return res.toString();
     }
 }

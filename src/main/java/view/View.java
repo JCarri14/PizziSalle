@@ -1,9 +1,6 @@
 package view;
 
-import model.pizza.Drink;
-import model.pizza.Ingredient;
-import model.pizza.Mass;
-import model.pizza.Pizza;
+import model.pizza.*;
 
 import java.util.List;
 import java.util.Scanner;
@@ -95,11 +92,11 @@ public class View {
         }
     }
 
-    private String concatIngredients(List<Ingredient> ingredients) {
+    private String concatIngredients(List<PizzaItem> items) {
         String s = "";
 
-        for (Ingredient i: ingredients) {
-            s += i.getName() + ", ";
+        for (PizzaItem i: items) {
+            s += i.getIngredient().getName() + ", ";
         }
 
         return s.substring(0, s.length() - 2);

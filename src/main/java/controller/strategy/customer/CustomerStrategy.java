@@ -5,11 +5,15 @@ import builders.v1.PizzaBuilder;
 import builders.v2.AddressBuilder;
 import builders.v2.UserBuilder;
 import controller.SessionContext;
+import db.DBConnector;
 import db.DBConnectorFactory;
-import db.enums.DBResponse;
 import db.callbacks.DBCallback;
-import db.enums.DBObject;
-import db.enums.DBType;
+import db.model.DBObject;
+import db.model.DBResponse;
+import db.model.DBType;
+import db.repositories.OrderItemRepository;
+import db.repositories.OrderRepository;
+import db.repositories.UserRepository;
 import model.Model;
 import model.delegation.Delegation;
 import model.delegation.DelegationFactory;
@@ -29,7 +33,6 @@ import view.components.CustomerComponents;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CustomerStrategy implements ControllerStrategy, DBCallback {
@@ -98,10 +101,29 @@ public class CustomerStrategy implements ControllerStrategy, DBCallback {
     }
 
     private void showCart() {
+        showPizzas();
+        showDrinks();
+        showIngredients();
+    }
+
+    private void showPizzas() {
         this.view.printMessage(
                 CustomerComponents.createPizzaCart(
                         this.model.getPizzas().stream().map(Pizza::getName).collect(Collectors.toList())
                 ));
+    }
+
+    private void showDrinks() {
+        this.view.printMessage(
+                CustomerComponents.createPizzaCart(
+                        this.model.getDrinks().stream().map(Drink::getName).collect(Collectors.toList())
+                ));
+    }
+
+    private void showIngredients() {
+        this.view.printMessage(
+                CustomerComponents.createExtraCart(
+                        this.model.getIngredients().stream().map(Ingredient::getName).collect(Collectors.toList())));
     }
 
     private void requestDelegation() {
@@ -111,7 +133,7 @@ public class CustomerStrategy implements ControllerStrategy, DBCallback {
 
         while(!isCorrect) {
             option = Integer.parseInt(
-                    this.view.prompt(CustomerComponents.createDelegationMenu()));
+                    this.view.prompt(CustomerComponents.createDelegationMenu(null)));
             isCorrect = option >= 1 && option <= 4;
             if (!isCorrect) this.view.printMessage("Invalid option. Enter correct value.\n");
         }
@@ -160,8 +182,7 @@ public class CustomerStrategy implements ControllerStrategy, DBCallback {
     }
 
     private void requestPizza() {
-        CustomerComponents.createPizzaCart(
-                this.model.getPizzas().stream().map(Pizza::getName).collect(Collectors.toList()));
+        showPizzas();
         int index = Integer.parseInt(this.view.prompt("Pizza(num): "));
         Pizza pizza = new PizzaBuilder()
                 .withBasePizza(this.model.getPizzas().get(index-1))
@@ -170,7 +191,6 @@ public class CustomerStrategy implements ControllerStrategy, DBCallback {
         int quantity = Integer.parseInt(this.view.prompt("Quantity: "));
         orderBuilder = orderBuilder.withItem(
                 new OrderItem(-1, quantity, pizza));
-
     }
 
     private List<PizzaItem> requestExtras() {
@@ -182,8 +202,7 @@ public class CustomerStrategy implements ControllerStrategy, DBCallback {
         List<PizzaItem> res = new ArrayList<>();
 
         while (keepAdding) {
-            CustomerComponents.createExtraCart(
-                    this.model.getIngredients().stream().map(Ingredient::getName).collect(Collectors.toList()));
+            showIngredients();
             int index = Integer.parseInt(this.view.prompt("Extra(num): "));
             int quantity = Integer.parseInt(this.view.prompt("Quantity: "));
 
@@ -198,8 +217,7 @@ public class CustomerStrategy implements ControllerStrategy, DBCallback {
     }
 
     private void requestDrink() {
-        CustomerComponents.createDrinkCart(
-                this.model.getDrinks().stream().map(Drink::getName).collect(Collectors.toList()));
+        showDrinks();
         int index = Integer.parseInt(this.view.prompt("Drink(num): "));
         int quantity = Integer.parseInt(this.view.prompt("Quantity: "));
 
@@ -219,7 +237,7 @@ public class CustomerStrategy implements ControllerStrategy, DBCallback {
         while (!isCorrect) {
             this.view.printMessage(CustomerComponents.createOrderOptions());
             option = Integer.parseInt(this.view.prompt("Option: "));
-            isCorrect = option >= 1 && option <= 3;
+            isCorrect = option >= 1 && option <= 4;
             if (!isCorrect) this.view.printMessage("Invalid option. Enter correct value.\n");
         }
         return option;
@@ -250,7 +268,7 @@ public class CustomerStrategy implements ControllerStrategy, DBCallback {
     private void manageOrder() {
         this.view.printMessage("**** Order Form ****");
         this.view.printMessage("Checking credentials...");
-        if (this.context.getUserCredentials() == null) {
+        if (this.context.getUserCredentials() == null || this.context.getUserCredentials().getName() == null) {
             this.view.printMessage("No credentials found. Launching credentials form...");
             requestCredentials();
         }
@@ -267,21 +285,57 @@ public class CustomerStrategy implements ControllerStrategy, DBCallback {
 
         Order order = orderBuilder.createOrder();
         try {
-            DBConnectorFactory
-                    .get(DBType.MYSQL)
-                    .insert(DBObject.ORDER, order, this);
+            DBConnector dbConnector = DBConnectorFactory.get(DBType.MYSQL);
+            UserRepository.getInstance().insertUser(dbConnector, order.getCustomer(), new DBCallback() {
+                @Override
+                public void onResponse(DBResponse DBResponse) {
+                    if (DBResponse.isSuccessful()) {
+                        int userID = (int) DBResponse.body();
+                        order.getCustomer().setId(userID);
+                        OrderRepository.getInstance().insertOrder(dbConnector, order, new DBCallback() {
+                            @Override
+                            public void onResponse(db.model.DBResponse DBResponse) {
+                                if (DBResponse.isSuccessful()) {
+                                    int orderID = (int) DBResponse.body();
+                                    OrderItemRepository.getInstance().insertOrderItems(dbConnector, order.getItems(), orderID, new DBCallback() {
+                                        @Override
+                                        public void onResponse(db.model.DBResponse DBResponse) {
+                                            System.out.println();
+                                        }
+
+                                        @Override
+                                        public void onFailure(Throwable t) {
+                                            t.printStackTrace();
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Throwable t) {
+                                t.printStackTrace();
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    t.printStackTrace();
+                }
+            });
         } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
         }
     }
 
     @Override
-    public void onSuccess(Map<DBResponse, Object> res) {
-        // do something...
+    public void onResponse(DBResponse DBResponse) {
+
     }
 
     @Override
-    public void onFailure(Map<DBResponse, Object> res) {
-        // do something...
+    public void onFailure(Throwable t) {
+
     }
 }
