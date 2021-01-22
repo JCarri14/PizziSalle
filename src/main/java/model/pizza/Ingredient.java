@@ -1,9 +1,9 @@
 package model.pizza;
 
-import db.enums.DBObject;
+import db.model.DBObject;
 
 public class Ingredient {
-    public final static DBObject type = DBObject.INGREDIENT;
+    public static DBObject TYPE = DBObject.INGREDIENT;
     private int id;
     private String name;
     private String description;
@@ -12,6 +12,12 @@ public class Ingredient {
         this.id = id;
         this.name = name;
         this.description = description;
+    }
+
+    public Ingredient(String name) {
+        this.id = -1;
+        this.name = name;
+        this.description = null;
     }
 
     public int getId() {

@@ -1,16 +1,18 @@
 package model.pizza;
 
-import db.enums.DBObject;
-import model.order.OrderItem;
-import model.order.OrderType;
+import db.model.DBObject;
 
 public class Drink {
-    public final static DBObject type = DBObject.DRINK;
+    public static DBObject TYPE = DBObject.DRINK;
     private int id;
     private String name;
 
     public Drink(int id) {
         this.id = id;
+    }
+
+    public Drink(String name) {
+        this.name = name;
     }
 
     public Drink(int id, String name) {

@@ -1,9 +1,9 @@
 package model.user;
 
-import db.enums.DBObject;
+import db.model.DBObject;
 
 public class Address {
-    public static final DBObject type = DBObject.ADDRESS;
+    public static DBObject TYPE = DBObject.ADDRESS;
     private int id;
     private String streetName;
     private String number;

@@ -1,10 +1,14 @@
 package model;
 
 
-import controller.SessionContext;
-import db.enums.DBObject;
-import db.enums.DBType;
+import db.DBConnector;
+import db.model.DBObject;
 import db.mysql.MySQLManagerFactory;
+import db.repositories.DrinkRepository;
+import db.repositories.IngredientRepository;
+import db.repositories.MassRepository;
+import db.repositories.PizzaRepository;
+import model.delegation.Delegation;
 import model.pizza.Drink;
 import model.pizza.Ingredient;
 import model.pizza.Mass;
@@ -12,7 +16,6 @@ import model.pizza.Pizza;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +26,14 @@ public class Model implements PropertyChangeListener{
     private List<Ingredient> ingredients;
     private List<Mass> massas;
     private List<Drink> drinks;
+    private List<Delegation> delegations;
 
     public Model() {
         this.pizzas = new ArrayList<>();
         this.ingredients = new ArrayList<>();
         this.massas = new ArrayList<>();
         this.drinks = new ArrayList<>();
+        this.delegations = new ArrayList<>();
         startObserving();
     }
 
@@ -49,32 +54,29 @@ public class Model implements PropertyChangeListener{
             case "ingredients":
                 setIngredients((List<Ingredient>) event.getNewValue());
                 break;
-            case "massas":
+            case "masses":
                 setMassas((List<Mass>) event.getNewValue());
                 break;
             case "drinks":
                 setDrinks((List<Drink>) event.getNewValue());
                 break;
+            case "delegations":
+                setDelegations((List<Delegation>) event.getNewValue());
         }
     }
 
     public void startObserving() {
-        //Could add some logic to control dbType ObjectManagerFactory
-        //DBType dbType = SessionContext.getInstance().getDbType();
-
-        // **ATENTION**
-        // It is assumed **ALL** Object Managers have already been initialised
-        MySQLManagerFactory.get(DBObject.PIZZA,null).addObserver(this);
-        MySQLManagerFactory.get(DBObject.INGREDIENT,null).addObserver(this);
-        MySQLManagerFactory.get(DBObject.MASS,null).addObserver(this);
-        MySQLManagerFactory.get(DBObject.DRINK,null).addObserver(this);
+        PizzaRepository.getInstance().addObserver(this);
+        IngredientRepository.getInstance().addObserver(this);
+        MassRepository.getInstance().addObserver(this);
+        DrinkRepository.getInstance().addObserver(this);
     }
 
     public void stopObserving() {
-        MySQLManagerFactory.get(DBObject.PIZZA,null).removeObserver(this);
-        MySQLManagerFactory.get(DBObject.INGREDIENT,null).removeObserver(this);
-        MySQLManagerFactory.get(DBObject.MASS,null).removeObserver(this);
-        MySQLManagerFactory.get(DBObject.DRINK,null).removeObserver(this);
+        PizzaRepository.getInstance().removeObserver(this);
+        IngredientRepository.getInstance().removeObserver(this);
+        MassRepository.getInstance().removeObserver(this);
+        DrinkRepository.getInstance().removeObserver(this);
     }
 
     public List<Pizza> getPizzas() {
@@ -107,5 +109,13 @@ public class Model implements PropertyChangeListener{
 
     public void setDrinks(List<Drink> drinks) {
         this.drinks = drinks;
+    }
+
+    public List<Delegation> getDelegations() {
+        return delegations;
+    }
+
+    public void setDelegations(List<Delegation> delegations) {
+        this.delegations = delegations;
     }
 }

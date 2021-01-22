@@ -1,11 +1,11 @@
 package model.user;
 
-import db.enums.DBObject;
+import db.model.DBObject;
 
 import java.sql.Date;
 
 public class User {
-    public static final DBObject type = DBObject.USER;
+    public static DBObject TYPE = DBObject.USER;
     private int id;
     private String name;
     private String middleName;

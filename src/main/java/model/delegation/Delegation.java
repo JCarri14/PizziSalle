@@ -1,14 +1,18 @@
 package model.delegation;
 
-import db.enums.DBObject;
+import db.model.DBObject;
 
 public class Delegation {
-    public final static DBObject type = DBObject.DELEGATION;
+    public static DBObject TYPE = DBObject.DELEGATION;
     private Integer id;
     private String name;
 
     public Delegation(Integer id) {
         this.id = id;
+    }
+
+    public Delegation(String name) {
+        this.name = name;
     }
 
     public Delegation(Integer id, String name) {

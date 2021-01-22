@@ -1,14 +1,13 @@
 package model.order;
 
-import db.enums.DBObject;
+import db.model.DBObject;
 import model.delegation.Delegation;
 import model.user.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
-    public final static DBObject type = DBObject.ORDER;
+    public static DBObject TYPE = DBObject.ORDER;
     private int id;
     private User customer;
     private Delegation delegation;

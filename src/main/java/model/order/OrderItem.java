@@ -1,12 +1,12 @@
 package model.order;
 
-import db.enums.DBObject;
+import db.model.DBObject;
 import model.pizza.Drink;
 import model.pizza.Mass;
 import model.pizza.Pizza;
 
 public class OrderItem {
-    public final static DBObject type = DBObject.ORDER_ITEM;
+    public static DBObject TYPE = DBObject.ORDER_ITEM;
     private int id;
     private int quantity;
     private Pizza pizza;

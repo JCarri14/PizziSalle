@@ -1,14 +1,11 @@
 package model.pizza;
 
-import db.enums.DBObject;
-import model.pizza.Ingredient;
-import model.order.OrderItem;
-import model.order.OrderType;
+import db.model.DBObject;
 
 import java.util.List;
 
 public class Pizza {
-    public final static DBObject type = DBObject.PIZZA;
+    public static DBObject TYPE = DBObject.PIZZA;
     private int id;
     private String name;
     private List<PizzaItem> ingredients;
