@@ -17,8 +17,8 @@ import java.sql.SQLException;
 public class Main {
 
     public static void main(String[] args) {
-        final String password = "mysql1234";
-        final String username = "root";
+        final String password = "pass";
+        final String username = "user";
         try {
             DBConnector dbConnector = DBConnectorFactory.get(DBType.MYSQL);
             dbConnector.setCredentials(username, "pizzisalle", password);
