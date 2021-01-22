@@ -1,18 +1,24 @@
 package db.mappers;
 
 import builders.v1.PizzaBuilder;
+import db.model.DBType;
 import model.pizza.Pizza;
 import model.user.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class PizzaMapper {
+public class PizzaMapper extends EntityMapper<Pizza> {
 
-    public static Pizza MySQLResponseToObject(ResultSet rs) {
+    public PizzaMapper(DBType dbType) {
+        super(dbType);
+    }
+
+    @Override
+    protected Pizza mySQLResponseToEntity(ResultSet rs) {
         try {
             return new PizzaBuilder()
-                    .withId(Integer.parseInt(rs.getString("id")))
+                    .withId(Integer.parseInt(rs.getString("id_pizza")))
                     .withName(rs.getString("name"))
                     .createPizza();
         } catch (SQLException throwables) {
@@ -21,8 +27,49 @@ public class PizzaMapper {
         return null;
     }
 
-    public static String ObjectToMySQLQuery(Pizza pizza) {
+    @Override
+    protected Pizza mongoResponseToEntity() {
+        return null;
+    }
+
+    @Override
+    public String mySQLInsert(Pizza pizza) {
         return "INSERT INTO Pizza (name) VALUES ("
                 + '\'' + pizza.getName() + '\'' + ");";
+    }
+
+    @Override
+    public String mongoInsert(Pizza pizza) {
+        return null;
+    }
+
+    @Override
+    public String mySQLDelete(Pizza pizza) {
+        return null;
+    }
+
+    @Override
+    public String mongoDelete(Pizza pizza) {
+        return null;
+    }
+
+    @Override
+    public String mySQLGet(Pizza pizza) {
+        return null;
+    }
+
+    @Override
+    public String mongoGet(Pizza pizza) {
+        return null;
+    }
+
+    @Override
+    public String mySQLUpdate(Pizza pizza) {
+        return null;
+    }
+
+    @Override
+    public String mongoUpdate(Pizza pizza) {
+        return null;
     }
 }

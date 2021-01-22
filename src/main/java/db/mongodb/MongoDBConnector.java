@@ -1,7 +1,8 @@
 package db.mongodb;
 
 import db.DBConnector;
-import db.enums.DBObject;
+import db.criteria.Criteria;
+import db.model.DBObject;
 import db.callbacks.DBCallback;
 
 import java.sql.SQLException;
@@ -21,28 +22,39 @@ public class MongoDBConnector extends DBConnector {
         return instance;
     }
 
+
     @Override
-    public void get(DBObject objectType, Map<String, String> filters, DBCallback callback) {
+    public void get(DBObject objectType, Criteria filters, DBCallback dbCallback) {
 
     }
 
     @Override
-    public void getAll(DBObject objectType, DBCallback callback) throws SQLException {
+    public void getAll(DBObject objectType, DBCallback dbCallback) {
 
     }
 
     @Override
-    public void insert(DBObject objectType, Object element, DBCallback callback) {
+    public void insert(DBObject objectType, Object element, DBCallback dbCallback) {
 
     }
 
     @Override
-    public void delete(DBObject objectType, int elementId, DBCallback callback) {
+    public void insertWithParenId(DBObject objectType, Object element, Integer parentId, DBCallback dbCallback) {
 
     }
 
     @Override
-    public void update(DBObject objectType, Object element, DBCallback callback) {
+    public void delete(DBObject objectType, Criteria filters, DBCallback dbCallback) {
+
+    }
+
+    @Override
+    public void update(DBObject objectType, Object element, DBCallback dbCallback) {
+
+    }
+
+    @Override
+    public void connect() throws Exception {
 
     }
 
