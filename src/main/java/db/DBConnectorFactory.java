@@ -1,6 +1,6 @@
 package db;
 
-import db.enums.DBType;
+import db.model.DBType;
 import db.mongodb.MongoDBConnector;
 import db.mysql.MySQLConnector;
 
