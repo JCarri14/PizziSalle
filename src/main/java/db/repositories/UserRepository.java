@@ -1,16 +1,26 @@
 package db.repositories;
 
+import db.callbacks.DBCallback;
+import db.criteria.Criteria;
 import db.DBConnector;
-import db.managers.DBObjectManager;
+import db.interfaces.DBEntityManager;
+import db.model.DBFilter;
+import db.model.DBResponse;
+import db.model.DBType;
+import model.pizza.Pizza;
 import model.user.User;
 
-import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class UserRepository extends BaseRepository<User> {
+public class UserRepository extends BaseRepository<User> implements DBCallback {
     private static UserRepository instance;
+
+    private List<User> users;
+
+    private UserRepository() {
+        this.users = new ArrayList<>();
+    }
 
     public static UserRepository getInstance() {
         if (instance == null) {
@@ -23,39 +33,31 @@ public class UserRepository extends BaseRepository<User> {
         return instance;
     }
 
-    public User getUserById(DBConnector dbConnector, int userId) {
-        return new GetByIdAsync(dbConnector, User.type).execute(userId);
+    public void getUserById(DBConnector dbConnector, int userId, final DBCallback dbCallback) {
+        new GetByIdAsync(dbConnector, User.TYPE, dbCallback).execute(userId);
     }
 
-    public List<User> getAllUsers(DBConnector dbConnector) {
-        return new GetAllAsync(dbConnector, User.type).execute();
+    public void getAllUsers(DBConnector dbConnector, final DBCallback dbCallback) {
+        new GetAllAsync(dbConnector, User.TYPE, dbCallback).execute();
     }
 
-    public void insertUser(DBConnector dbConnector, User user) {
-        new InsertOneAsync(dbConnector, User.type).execute(user);
+    public void insertUser(DBConnector dbConnector, User user, final DBCallback dbCallback) {
+        new InsertOneAsync(dbConnector, User.TYPE, dbCallback).execute(user);
     }
 
-    public void deleteUserById(DBConnector dbConnector, int userId) {
-        new DeleteByIdAsync(dbConnector, User.type).execute(userId);
+    public void deleteUserById(DBConnector dbConnector, int userId, final DBCallback dbCallback) {
+        new DeleteByIdAsync(dbConnector, User.TYPE, dbCallback).execute(userId);
     }
 
-    private static class GetUserByIdAsync extends AsyncTask<Integer,User> {
-
-        public GetUserByIdAsync(DBConnector dbConnector) {
-            super(dbConnector);
+    @Override
+    public void onResponse(DBResponse DBResponse) {
+        if (DBResponse.body() instanceof List) {
+            this.users = (List<User>) DBResponse.body();
         }
+    }
 
-        @Override
-        public User doInBackground(Integer... integers) {
-            try {
-                DBObjectManager manager = getManager(dbConnector, User.type);
-                Map<String, String> filters = new HashMap<>();
-                filters.put("id", String.valueOf(integers[0]));
-                manager.get(filters);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            return null;
-        }
+    @Override
+    public void onFailure(Throwable t) {
+
     }
 }

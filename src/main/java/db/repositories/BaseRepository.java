@@ -1,18 +1,19 @@
 package db.repositories;
 
+import db.callbacks.DBCallback;
+import db.criteria.Criteria;
 import db.DBConnector;
-import db.enums.DBObject;
-import db.managers.DBObjectManager;
+import db.model.DBFilter;
+import db.model.DBObject;
+import db.interfaces.DBEntityManager;
+import db.model.DBType;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /* Another level of abstraction for end users */
-public class BaseRepository<Param> {
+public abstract class BaseRepository<Param> {
     protected PropertyChangeSupport support;
 
     protected BaseRepository() {
@@ -30,136 +31,122 @@ public class BaseRepository<Param> {
     protected class GetByIdAsync extends AsyncTask<Integer, Param> {
 
         private DBObject object;
+        private DBCallback dbCallback;
 
-        public GetByIdAsync(DBConnector dbConnector, DBObject object) {
+        public GetByIdAsync(DBConnector dbConnector, DBObject object, DBCallback dbCallback) {
             super(dbConnector);
             this.object = object;
+            this.dbCallback = dbCallback;
         }
 
         @Override
         public Param doInBackground(Integer... integers) {
-            try {
-                DBObjectManager manager = getManager(dbConnector, object);
-                Map<String, String> filters = new HashMap<>();
-                filters.put("id", String.valueOf(integers[0]));
-                manager.get(filters);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            while (this.waitResponse) {}
-            return this.response;
+            DBEntityManager manager = getManager(dbConnector, object);
+            Criteria criteria = new Criteria(DBType.MYSQL);
+            criteria.addFilter(DBFilter.ID, String.valueOf(integers[0]));
+            manager.get(criteria, dbCallback);
+            return null;
         }
     }
 
     protected class GetByNameAsync extends AsyncTask<String, Param> {
 
         private DBObject object;
+        private DBCallback dbCallback;
 
-        public GetByNameAsync(DBConnector dbConnector, DBObject object) {
+        public GetByNameAsync(DBConnector dbConnector, DBObject object, DBCallback dbCallback) {
             super(dbConnector);
             this.object = object;
+            this.dbCallback = dbCallback;
         }
 
         @Override
         public Param doInBackground(String... strings) {
-            try {
-                DBObjectManager manager = getManager(dbConnector, object);
-                Map<String, String> filters = new HashMap<>();
-                filters.put("name", strings[0]);
-                manager.get(filters);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            while (this.waitResponse) {}
-            return this.response;
+            DBEntityManager manager = getManager(dbConnector, object);
+            Criteria criteria = new Criteria(DBType.MYSQL);
+            criteria.addFilter(DBFilter.NAME, String.valueOf(strings[0]));
+            manager.get(criteria, dbCallback);
+            return null;
         }
     }
 
     protected class GetAllAsync extends AsyncTask<Void, List<Param>> {
 
         private DBObject object;
+        private DBCallback dbCallback;
 
-        public GetAllAsync(DBConnector dbConnector, DBObject object) {
+        public GetAllAsync(DBConnector dbConnector, DBObject object, DBCallback dbCallback) {
             super(dbConnector);
             this.object = object;
+            this.dbCallback = dbCallback;
         }
 
         @Override
         public List<Param> doInBackground(Void... voids) {
-            try {
-                DBObjectManager manager = getManager(dbConnector, object);
-                return manager.getAll();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            DBEntityManager manager = getManager(dbConnector, object);
+            manager.getAll(dbCallback);
             return null;
         }
     }
 
-    protected class InsertOneAsync extends AsyncTask<Param,Void> {
+    protected class InsertOneAsync extends AsyncTask<Param,Integer> {
 
         private DBObject object;
+        private DBCallback dbCallback;
 
-        public InsertOneAsync(DBConnector dbConnector, DBObject object) {
+        public InsertOneAsync(DBConnector dbConnector, DBObject object, DBCallback dbCallback) {
             super(dbConnector);
             this.object = object;
+            this.dbCallback = dbCallback;
         }
 
         @Override
-        public Void doInBackground(Param... params) {
-            try {
-                DBObjectManager manager = getManager(dbConnector, object);
-                manager.insert(params[0]);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            return null;
+        public Integer doInBackground(Param... params) {
+            DBEntityManager manager = getManager(dbConnector, object);
+            manager.insert(params[0], null, dbCallback);
+            return 0;
         }
     }
 
-    protected class DeleteByIdAsync extends AsyncTask<Integer,Void> {
+    protected class DeleteByIdAsync extends AsyncTask<Integer,Boolean> {
 
         private DBObject object;
+        private DBCallback dbCallback;
 
-        public DeleteByIdAsync(DBConnector dbConnector, DBObject object) {
+        public DeleteByIdAsync(DBConnector dbConnector, DBObject object, DBCallback dbCallback) {
             super(dbConnector);
             this.object = object;
+            this.dbCallback = dbCallback;
         }
 
         @Override
-        public Void doInBackground(Integer... integers) {
-            try {
-                DBObjectManager manager = getManager(dbConnector, object);
-                Map<String, String> filters = new HashMap<>();
-                filters.put("id", String.valueOf(integers[0]));
-                manager.delete(filters);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            return null;
+        public Boolean doInBackground(Integer... integers) {
+            DBEntityManager manager = getManager(dbConnector, object);
+            Criteria criteria = new Criteria(DBType.MYSQL);
+            criteria.addFilter(DBFilter.ID, String.valueOf(integers[0]));
+            manager.delete(criteria, dbCallback);
+            return true;
         }
     }
 
-    protected class DeleteByNameAsync extends AsyncTask<String,Void> {
+    protected class DeleteByNameAsync extends AsyncTask<String,Boolean> {
 
         private DBObject object;
+        private DBCallback dbCallback;
 
-        public DeleteByNameAsync(DBConnector dbConnector, DBObject object) {
+        public DeleteByNameAsync(DBConnector dbConnector, DBObject object, DBCallback dbCallback) {
             super(dbConnector);
             this.object = object;
+            this.dbCallback = dbCallback;
         }
 
         @Override
-        public Void doInBackground(String... strings) {
-            try {
-                DBObjectManager manager = getManager(dbConnector, object);
-                Map<String, String> filters = new HashMap<>();
-                filters.put("name", strings[0]);
-                manager.delete(filters);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            return null;
+        public Boolean doInBackground(String... strings) {
+            DBEntityManager manager = getManager(dbConnector, object);
+            Criteria criteria = new Criteria(DBType.MYSQL);
+            criteria.addFilter(DBFilter.NAME, strings[0]);
+            manager.delete(criteria, dbCallback);
+            return true;
         }
     }
 

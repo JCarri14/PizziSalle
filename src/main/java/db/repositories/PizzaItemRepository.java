@@ -1,10 +1,11 @@
 package db.repositories;
 
 import db.DBConnector;
-import db.enums.DBObject;
-import db.managers.DBObjectManager;
+import db.criteria.Criteria;
+import db.interfaces.DBEntityManager;
+import db.model.DBFilter;
+import db.model.DBType;
 import model.pizza.Mass;
-import model.pizza.Pizza;
 import model.pizza.PizzaItem;
 
 import java.sql.SQLException;
@@ -36,7 +37,7 @@ public class PizzaItemRepository extends BaseRepository<Mass> {
     }
 
     public void insertItemToPizza(DBConnector dbConnector, PizzaItem item, int pizzaId) {
-        new InsertItemToPizzaAsync(dbConnector).execute();
+        new InsertItemToPizzaAsync(dbConnector, pizzaId).execute(item);
     }
 
     private class GetItemsByPizzaIdAsync extends AsyncTask<Integer, List<PizzaItem>> {
@@ -47,34 +48,27 @@ public class PizzaItemRepository extends BaseRepository<Mass> {
 
         @Override
         public List<PizzaItem> doInBackground(Integer... integers) {
-            try {
-                DBObjectManager manager = getManager(dbConnector, PizzaItem.type);
-                Map<String, String> filters = new HashMap<>();
-                filters.put("id_pizza", String.valueOf(integers[0]));
-                return manager.get(filters);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            DBEntityManager manager = getManager(dbConnector, PizzaItem.TYPE);
+            Criteria criteria = new Criteria(DBType.MYSQL);
+            criteria.addFilter(DBFilter.ID_PIZZA, String.valueOf(integers[0]));
+            manager.get(criteria, null);
             return null;
         }
     }
 
-    private class InsertItemToPizzaAsync extends AsyncTask<Integer, Void> {
+    private class InsertItemToPizzaAsync extends AsyncTask<PizzaItem, Integer> {
 
-        public InsertItemToPizzaAsync(DBConnector dbConnector) {
+        private int pizzaId;
+
+        public InsertItemToPizzaAsync(DBConnector dbConnector, int pizzaId) {
             super(dbConnector);
+            this.pizzaId = pizzaId;
         }
 
         @Override
-        public Void doInBackground(Integer... integers) {
-            try {
-                DBObjectManager manager = getManager(dbConnector, PizzaItem.type);
-                Map<String, String> filters = new HashMap<>();
-                filters.put("id_pizza", String.valueOf(integers[0]));
-                return manager.get(filters);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+        public Integer doInBackground(PizzaItem... items) {
+            DBEntityManager manager = getManager(dbConnector, PizzaItem.TYPE);
+            manager.insert(items[0], pizzaId, null);
             return null;
         }
     }

@@ -1,16 +1,26 @@
 package db.repositories;
 
 import db.DBConnector;
-import db.managers.DBObjectManager;
+import db.callbacks.DBCallback;
+import db.interfaces.DBEntityManager;
+import db.model.DBObject;
+import db.model.DBResponse;
 import model.pizza.Pizza;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PizzaRepository extends BaseRepository<Pizza> {
+public class PizzaRepository extends BaseRepository<Pizza> implements DBCallback {
     private static PizzaRepository instance;
+
+    private List<Pizza> pizzas;
+
+    private PizzaRepository() {
+        pizzas = new ArrayList<>();
+    }
 
     public static PizzaRepository getInstance() {
         if (instance == null) {
@@ -23,52 +33,41 @@ public class PizzaRepository extends BaseRepository<Pizza> {
         return instance;
     }
 
-    public Pizza getPizzaById(DBConnector dbConnector, int id, boolean withFullInfo) {
-        if (!withFullInfo) return new GetByIdAsync(dbConnector, Pizza.type).execute(id);
-        return new GetFullPizzaByIdAsync(dbConnector).execute(id);
+    public void getPizzaById(DBConnector dbConnector, int id, boolean withFullInfo, final DBCallback dbCallback) {
+        if (!withFullInfo) new GetByIdAsync(dbConnector, Pizza.TYPE, dbCallback).execute(id);
     }
 
-    public Pizza getPizzaByName(DBConnector dbConnector, String name, boolean withFullInfo) {
-        if (!withFullInfo) return new GetByNameAsync(dbConnector, Pizza.type).execute(name);
+    public void getPizzaByName(DBConnector dbConnector, String name, boolean withFullInfo, final DBCallback dbCallback) {
+        if (!withFullInfo) new GetByNameAsync(dbConnector, Pizza.TYPE, dbCallback).execute(name);
+    }
+
+    public List<Pizza> getAllPizzas(DBConnector dbConnector, boolean withFullInfo, final DBCallback dbCallback) {
+        if (!withFullInfo) return new GetAllAsync(dbConnector, Pizza.TYPE, dbCallback).execute();
         return null;
     }
 
-    public List<Pizza> getAllPizzas(DBConnector dbConnector, boolean withFullInfo) {
-        if (!withFullInfo) return new GetAllAsync(dbConnector, Pizza.type).execute();
-        return null;
+    public void insertPizza(DBConnector dbConnector, Pizza pizza, final DBCallback dbCallback) {
+        new InsertOneAsync(dbConnector, DBObject.PIZZA, dbCallback).execute(pizza);
     }
 
-    public void insertPizza(DBConnector dbConnector, Pizza pizza) {
-
+    public void deletePizzaById(DBConnector dbConnector, int pizzaId, final DBCallback dbCallback) {
+        new DeleteByIdAsync(dbConnector, Pizza.TYPE, dbCallback).execute(pizzaId);
     }
 
-    public void deletePizzaById(DBConnector dbConnector, int pizzaId) {
-        new DeleteByIdAsync(dbConnector, Pizza.type).execute(pizzaId);
+    public void deletePizzaByName(DBConnector dbConnector, String name, final DBCallback dbCallback) {
+        new DeleteByNameAsync(dbConnector, Pizza.TYPE, dbCallback).execute(name);
     }
 
-    public void deletePizzaByName(DBConnector dbConnector, String name) {
-        new DeleteByNameAsync(dbConnector, Pizza.type).execute(name);
-    }
-
-    private class GetFullPizzaByIdAsync extends AsyncTask<Integer, Pizza> {
-
-        public GetFullPizzaByIdAsync(DBConnector dbConnector) {
-            super(dbConnector);
-        }
-
-        @Override
-        public Pizza doInBackground(Integer... integers) {
-            try {
-                DBObjectManager manager = getManager(dbConnector, Pizza.type);
-                Map<String, String> filters = new HashMap<>();
-                filters.put("id", String.valueOf(integers[0]));
-                return (Pizza) manager.get(filters);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            return null;
+    @Override
+    public void onResponse(DBResponse DBResponse) {
+        if (DBResponse.body() instanceof List) {
+            support.firePropertyChange("pizzas", this.pizzas, (List<Pizza>) DBResponse.body());
+            this.pizzas = (List<Pizza>) DBResponse.body();
         }
     }
 
+    @Override
+    public void onFailure(Throwable t) {
 
+    }
 }
